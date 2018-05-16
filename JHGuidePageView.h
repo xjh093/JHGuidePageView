@@ -47,4 +47,11 @@
 + (instancetype)jh_guidePageViewWithImages:(NSArray<NSString *> *)images
                                buttonFrame:(CGRect)frame;
 
+/**
+ * @breif 传入图片名称数组 与 按钮
+ * @param images 图片名称数组
+ * @param button 按钮
+ */
++ (instancetype)jh_guidePageViewWithImages:(NSArray<NSString *> *)images
+                                    button:(UIButton *)button;
 @end
