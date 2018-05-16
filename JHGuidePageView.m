@@ -40,6 +40,7 @@
 
 NSArray *_images;
 CGRect _buttonFrame;
+UIButton *_button;
 
 static inline id _jhInit()
 {
@@ -61,6 +62,14 @@ static inline id _jhInit()
 {
     _images = images;
     _buttonFrame = frame;
+    return _jhInit();
+}
+
++ (instancetype)jh_guidePageViewWithImages:(NSArray<NSString *> *)images
+                                    button:(UIButton *)button
+{
+    _images = images;
+    _button = button;
     return _jhInit();
 }
 
@@ -131,24 +140,29 @@ static inline BOOL _jhIsFirst()
         if (i == _images.count - 1) {
             UIButton *button = [[UIButton alloc] init];
             button.frame = imageView.frame;
+            if (_button) {
+                button = _button;
+            }
             [button addTarget:self action:@selector(jhEnter) forControlEvents:1<<6];
             [scrollView addSubview:button];
             
+            CGRect buttonFrame = button.frame;
             if (!CGRectIsEmpty(_buttonFrame)) {
-                
-                CGFloat X = _buttonFrame.origin.x;
-                if (X < kWidth && X > 0) {
-                    X += (_images.count - 1) * kWidth;
-                }
-                
-                CGRect bFrame = button.frame;
-                bFrame.size.width = _buttonFrame.size.width;
-                bFrame.size.height = _buttonFrame.size.height;
-                bFrame.origin.y = _buttonFrame.origin.y;
-                bFrame.origin.x = X;
-                
-                button.frame = bFrame;
+                buttonFrame = _buttonFrame;
             }
+            
+            CGFloat X = buttonFrame.origin.x;
+            if (X < kWidth && X > 0) {
+                X += (_images.count - 1) * kWidth;
+            }
+            
+            CGRect bFrame = button.frame;
+            bFrame.size.width = buttonFrame.size.width;
+            bFrame.size.height = buttonFrame.size.height;
+            bFrame.origin.y = buttonFrame.origin.y;
+            bFrame.origin.x = X;
+            
+            button.frame = bFrame;
         }
     }
 }
